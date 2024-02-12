@@ -1,8 +1,8 @@
 FROM centos:latest
 
-RUN  yum -y install httpd 
-RUN  zip 
-RUN  unzip
+RUN  dnf -y install httpd 
+RUN  dnf -y zip 
+RUN  dnf -y unzip
 
 ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
 
