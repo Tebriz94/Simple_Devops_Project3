@@ -8,8 +8,8 @@ RUN  yum -y install httpd
 RUN  yum -y install epel-release
 #RUN  yum -y install dnf
 #RUN  dnf -y update
-RUN  yum -y zip unzip
-
+#RUN  yum -y zip unzip
+RUN yum install 'dnf-command(zip)'
 
 ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
 
