@@ -11,9 +11,10 @@ RUN yum -y install wget
 #RUN  dnf -y update
 #RUN  yum -y zip unzip
 #RUN yum install -y dnf
-RUN cd /usr/local/src/
-RUN wget http://mirror.centos.org/centos/8/BaseOS/x86_64/os/Packages/zip-3.0-23.el8.x86_64.rpm
-RUN pm -Uvh zip-3.0-23.el8.x86_64.rpm
+#RUN cd /usr/local/src/
+#RUN wget http://mirror.centos.org/centos/8/BaseOS/x86_64/os/Packages/zip-3.0-23.el8.x86_64.rpm
+#RUN pm -Uvh zip-3.0-23.el8.x86_64.rpm
+RUN yum makecache --refresh
 RUN yum -y install zip unzip
 
 ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
