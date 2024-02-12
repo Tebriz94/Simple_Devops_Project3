@@ -22,7 +22,7 @@ ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/ph
 WORKDIR /var/www/html/
 #this is the comment line
 RUN unzip phtotogenic.zip
-RUN cp -rvf phtotogenic/* .
+RUN cp -rvf photogenic/* .
 RUN rm -rf photogenic photogenic.zip
 CMD ["/usr/bin/httpd", "-D", "FOREGROUND"]
 EXPOSE 80 22
