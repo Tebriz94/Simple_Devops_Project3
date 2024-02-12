@@ -1,4 +1,4 @@
-FROM centos:8
+FROM centos:7
 
 RUN  cd /etc/yum.repos.d/
 RUN  sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-*
@@ -10,7 +10,7 @@ RUN  yum -y install epel-release
 #RUN  dnf -y update
 #RUN  yum -y zip unzip
 RUN yum install -y dnf
-RUN dnf -y install zip unzip
+RUN yum -y install zip unzip
 
 ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
 
