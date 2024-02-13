@@ -1,0 +1,49 @@
+node {
+    
+        stage ('Git checkout'){
+           git branch: 'main', url: 'https://github.com/Tebriz94/Simple_Devops_Project3.git'
+        }
+        
+        stage('Sending Dockerfile to Ansible server over ssh '){
+            
+                sshagent(['ansible_demo']) {
+                  // some block
+                  sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188'
+                  sh 'scp /var/lib/jenkins/workspace/demo_pipeline/* ec2-user@18.232.123.188:/home/ec2-user'
+                    }
+        }
+        
+        stage('Building Docker Image'){
+            
+                sshagent(['ansible_demo']) {
+                
+                 sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188 cd /home/ec2-user'
+                 sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188 sudo docker build -t $JOB_NAME:v1.$BUILD_ID . '
+                   }   
+       }
+       
+       stage('Docker Image Tagging '){
+            
+            sshagent(['ansible_demo']) {
+                
+                 	 sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188 cd /home/ec2-user'
+                	 sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188  sudo docker image tag $JOB_NAME:v1.$BUILD_ID tabriz94/$JOB_NAME:v1.$BUILD_ID '
+  		         sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188  sudo docker image tag $JOB_NAME:v1.$BUILD_ID tabriz94/$JOB_NAME:latest '
+                   }   
+       }
+       
+          stage("Pussing Docker Images to DockerHub Remote Repo"){
+
+	   sshagent(['ansible_demo']) {
+		withCredentials([string(credentialsId: 'dockerhub_passwd', variable: 'dockerhub_passwd')]) {
+   				 // some block
+   				 sh "ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188  sudo docker login -u tabriz94 -p ${dockerhub_passwd}"
+				 sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188  sudo docker image push tabriz94/$JOB_NAME:v1.$BUILD_ID'
+                 		 sh 'ssh -o StrictHostKeyChecking=no ec2-user@18.232.123.188  sudo docker image push tabriz94/$JOB_NAME:latest'
+			}	
+		}
+      }
+
+
+
+}
